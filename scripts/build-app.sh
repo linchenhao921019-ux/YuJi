@@ -16,6 +16,16 @@ mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$ICONSET"
 cp "$BUILD_DIR/YuJi" "$APP_DIR/Contents/MacOS/YuJi"
 cp "$ROOT/Info.plist" "$APP_DIR/Contents/Info.plist"
 
+LOCAL_BUNDLE_ID_FILE="$ROOT/.local-bundle-id"
+if [[ -f "$LOCAL_BUNDLE_ID_FILE" ]]; then
+  local_bundle_id=$(tr -d '[:space:]' < "$LOCAL_BUNDLE_ID_FILE")
+  if [[ ! "$local_bundle_id" =~ '^[A-Za-z0-9.-]+$' ]]; then
+    echo "无效的本机 Bundle ID：$local_bundle_id" >&2
+    exit 1
+  fi
+  /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $local_bundle_id" "$APP_DIR/Contents/Info.plist"
+fi
+
 for spec in \
   "16 icon_16x16.png" \
   "32 icon_16x16@2x.png" \

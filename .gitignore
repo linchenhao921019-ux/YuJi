@@ -4,6 +4,7 @@ QA/
 DesignReference/
 design-qa.md
 dist/
+.local-bundle-id
 .DS_Store
 *.xcuserstate
 *.zip

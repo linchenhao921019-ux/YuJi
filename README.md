@@ -2,7 +2,7 @@
 
 原生 SwiftUI macOS 卸载残留与应用缓存清理工具，视觉适配 macOS 26。
 
-当前公开源码版本：`v2026.07.14`。公开仓库使用示例 Bundle ID `com.example.yuji`；本地构建时可替换为自己的反向域名标识。
+当前公开源码版本：`v2026.07.14`。公开仓库使用示例 Bundle ID `com.example.yuji`；如需为本机构建保留固定应用身份，可在项目根目录创建不会被 Git 跟踪的 `.local-bundle-id` 文件并写入自己的反向域名标识。
 
 ## 功能
 
