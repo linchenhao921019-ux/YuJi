@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="${0:A:h:h}"
 VERSION="${1:-v$(date +%Y.%m.%d)}"
-OUTPUT="${2:-$ROOT/.dist.noindex/余迹-macOS-arm64-$VERSION.dmg}"
+OUTPUT="${2:-$ROOT/.dist.noindex/YuJi-macOS-arm64-$VERSION.dmg}"
 
 if [[ ! "$VERSION" =~ '^v[0-9]{4}\.[0-9]{2}\.[0-9]{2}(\.[0-9]{2})?$' ]]; then
   echo "版本格式应为 vYYYY.MM.DD 或 vYYYY.MM.DD.01" >&2

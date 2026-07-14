@@ -14,7 +14,7 @@
 
 ## 下载安装
 
-[下载最新版 DMG](https://github.com/linchenhao921019-ux/YuJi/releases/download/v2026.07.15/余迹-macOS-arm64-v2026.07.15.dmg)
+[下载最新版 DMG](https://github.com/linchenhao921019-ux/YuJi/releases/download/v2026.07.15/YuJi-macOS-arm64-v2026.07.15.dmg)
 
 需要 macOS 15 或更高版本。打开 DMG，将“余迹”拖入“Applications”即可。当前版本尚未经过 Apple 公证，首次启动请右键应用并选择“打开”。扫描前请按提示授予“完全磁盘访问”权限。
 
