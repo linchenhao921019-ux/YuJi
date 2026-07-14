@@ -67,18 +67,16 @@ private struct Sidebar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 12) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(YuJiTheme.accent.gradient)
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundStyle(.white)
-                }
-                .frame(width: 40, height: 40)
+            HStack(spacing: 14) {
+                Image(nsImage: NSApplication.shared.applicationIconImage)
+                    .resizable()
+                    .interpolation(.high)
+                    .antialiased(true)
+                    .frame(width: 52, height: 52)
+                    .shadow(color: .black.opacity(0.14), radius: 7, y: 3)
                 VStack(alignment: .leading, spacing: 1) {
                     Text("余迹")
-                        .font(.system(size: 20, weight: .bold))
+                        .font(.system(size: 22, weight: .bold))
                     Text("安全清理")
                         .font(.caption)
                         .foregroundStyle(.secondary)
