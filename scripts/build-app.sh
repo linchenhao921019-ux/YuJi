@@ -3,12 +3,14 @@ set -euo pipefail
 
 ROOT="${0:A:h:h}"
 APP_NAME="余迹"
-APP_DIR="$ROOT/dist.noindex/$APP_NAME.app"
-ICONSET="$ROOT/.build/AppIcon.iconset"
+APP_DIR="$ROOT/.dist.noindex/$APP_NAME.app"
+SWIFT_BUILD_DIR="${YUJI_BUILD_DIR:-$HOME/Library/Caches/YuJiBuild}"
+ICONSET="$SWIFT_BUILD_DIR/AppIcon.iconset"
 
 cd "$ROOT"
-swift build -c release
-BUILD_DIR="$(swift build -c release --show-bin-path)"
+mkdir -p "$SWIFT_BUILD_DIR"
+swift build --scratch-path "$SWIFT_BUILD_DIR" -c release
+BUILD_DIR="$(swift build --scratch-path "$SWIFT_BUILD_DIR" -c release --show-bin-path)"
 
 rm -rf "$APP_DIR" "$ICONSET"
 mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$ICONSET"

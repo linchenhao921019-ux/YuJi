@@ -5,6 +5,9 @@ DesignReference/
 design-qa.md
 dist/
 dist.noindex/
+.dist.noindex/
+内部资料/
+发布/
 .local-bundle-id
 .DS_Store
 *.xcuserstate

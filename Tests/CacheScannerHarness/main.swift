@@ -8,8 +8,8 @@ func require(_ condition: @autoclosure () -> Bool, _ message: String) {
 }
 
 let fm = FileManager.default
-let root = URL(fileURLWithPath: fm.currentDirectoryPath)
-    .appending(path: ".build/YuJiCacheTests-\(UUID().uuidString)")
+let root = fm.homeDirectoryForCurrentUser
+    .appending(path: "Library/Caches/YuJiBuild/Tests/YuJiCacheTests-\(UUID().uuidString)")
 let cacheRoot = root.appending(path: "Caches")
 let residueRoot = root.appending(path: "Residues")
 defer {
