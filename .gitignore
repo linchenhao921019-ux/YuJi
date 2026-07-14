@@ -1,0 +1,10 @@
+.build/
+work/
+QA/
+DesignReference/
+design-qa.md
+dist/
+.DS_Store
+*.xcuserstate
+*.zip
+*.dmg
