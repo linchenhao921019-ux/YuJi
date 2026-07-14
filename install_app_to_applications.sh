@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="${0:A:h}"
-SOURCE_APP="$ROOT/dist/余迹.app"
+SOURCE_APP="$ROOT/dist.noindex/余迹.app"
 TARGET_APP="/Applications/余迹.app"
 
 if [[ ! -d "$SOURCE_APP" ]]; then

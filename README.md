@@ -31,7 +31,7 @@ chmod +x scripts/build-app.sh
 ./scripts/build-app.sh
 ```
 
-构建产物位于 `dist/余迹.app`。构建脚本会优先使用本机稳定签名身份；未配置时才回退到临时 ad-hoc 签名。对外分发需要 Apple Developer ID 签名与公证。
+构建产物位于 `dist.noindex/余迹.app`。`.noindex` 后缀会阻止 Spotlight 把构建副本显示成第二个已安装应用。构建脚本会优先使用本机稳定签名身份；未配置时才回退到临时 ad-hoc 签名。对外分发需要 Apple Developer ID 签名与公证。
 
 首次进行本机长期使用前，可运行 `scripts/create-local-signing-identity.sh` 创建仅供本机使用的稳定签名身份。之后构建脚本会自动使用该身份，使完全磁盘访问授权在覆盖更新后仍能匹配同一个应用。对外分发仍需要 Apple Developer ID 签名与公证。
 

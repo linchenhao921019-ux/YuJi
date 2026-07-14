@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="${0:A:h:h}"
 APP_NAME="余迹"
-APP_DIR="$ROOT/dist/$APP_NAME.app"
+APP_DIR="$ROOT/dist.noindex/$APP_NAME.app"
 ICONSET="$ROOT/.build/AppIcon.iconset"
 
 cd "$ROOT"
