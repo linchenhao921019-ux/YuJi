@@ -15,7 +15,10 @@ if [[ -z "$IDENTITY" ]]; then
     | awk -v name="$LOCAL_IDENTITY_NAME" 'index($0, "\"" name "\"") { print $2; exit }')
 fi
 
-if [[ -n "$IDENTITY" ]]; then
+if [[ "$IDENTITY" == "-" ]]; then
+  codesign --force --deep --sign - "$APP_PATH" >/dev/null
+  echo "已使用临时 ad-hoc 签名"
+elif [[ -n "$IDENTITY" ]]; then
   codesign --force --deep --options runtime --timestamp=none --sign "$IDENTITY" "$APP_PATH" >/dev/null
   echo "已使用稳定签名：$LOCAL_IDENTITY_NAME"
 else

@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="${0:A:h:h}"
 APP_NAME="余迹"
-APP_DIR="$ROOT/.dist.noindex/$APP_NAME.app"
+APP_DIR="${YUJI_APP_DIR:-$ROOT/.dist.noindex/$APP_NAME.app}"
 SWIFT_BUILD_DIR="${YUJI_BUILD_DIR:-$HOME/Library/Caches/YuJiBuild}"
 ICONSET="$SWIFT_BUILD_DIR/AppIcon.iconset"
 
@@ -18,14 +18,18 @@ mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources" "$ICONSET"
 cp "$BUILD_DIR/YuJi" "$APP_DIR/Contents/MacOS/YuJi"
 cp "$ROOT/Info.plist" "$APP_DIR/Contents/Info.plist"
 
+bundle_id="${YUJI_BUNDLE_ID:-}"
 LOCAL_BUNDLE_ID_FILE="$ROOT/.local-bundle-id"
-if [[ -f "$LOCAL_BUNDLE_ID_FILE" ]]; then
-  local_bundle_id=$(tr -d '[:space:]' < "$LOCAL_BUNDLE_ID_FILE")
-  if [[ ! "$local_bundle_id" =~ '^[A-Za-z0-9.-]+$' ]]; then
-    echo "无效的本机 Bundle ID：$local_bundle_id" >&2
+if [[ -z "$bundle_id" && -f "$LOCAL_BUNDLE_ID_FILE" ]]; then
+  bundle_id=$(tr -d '[:space:]' < "$LOCAL_BUNDLE_ID_FILE")
+fi
+
+if [[ -n "$bundle_id" ]]; then
+  if [[ ! "$bundle_id" =~ '^[A-Za-z0-9.-]+$' ]]; then
+    echo "无效的 Bundle ID：$bundle_id" >&2
     exit 1
   fi
-  /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $local_bundle_id" "$APP_DIR/Contents/Info.plist"
+  /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $bundle_id" "$APP_DIR/Contents/Info.plist"
 fi
 
 for spec in \

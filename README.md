@@ -12,16 +12,22 @@
 
 “全选”会选择当前列表中的全部项目；风险等级仅作安全提醒。清理前请确认路径和提示信息。
 
-## 构建与安装
+## 下载安装
 
-需要 macOS 15 或更高版本，以及 Swift 6.2。
+[下载最新版 DMG](https://github.com/linchenhao921019-ux/YuJi/releases/download/v2026.07.15/余迹-macOS-arm64-v2026.07.15.dmg)
+
+需要 macOS 15 或更高版本。打开 DMG，将“余迹”拖入“Applications”即可。当前版本尚未经过 Apple 公证，首次启动请右键应用并选择“打开”。扫描前请按提示授予“完全磁盘访问”权限。
+
+## 源码构建
+
+开发者需要 Swift 6.2：
 
 ```bash
 ./scripts/build-app.sh
 ./install_app_to_applications.sh
 ```
 
-应用将安装到 `/Applications/余迹.app`。首次扫描前，请按提示授予“完全磁盘访问”权限。
+应用将安装到 `/Applications/余迹.app`。
 
 ## 安全说明
 
