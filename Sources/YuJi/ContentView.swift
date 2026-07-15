@@ -67,24 +67,24 @@ private struct Sidebar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 14) {
+            HStack(spacing: 16) {
                 Image(nsImage: NSApplication.shared.applicationIconImage)
                     .resizable()
                     .interpolation(.high)
                     .antialiased(true)
-                    .frame(width: 52, height: 52)
-                    .shadow(color: .black.opacity(0.14), radius: 7, y: 3)
-                VStack(alignment: .leading, spacing: 1) {
+                    .frame(width: 64, height: 64)
+                    .shadow(color: .black.opacity(0.16), radius: 9, y: 4)
+                VStack(alignment: .leading, spacing: 2) {
                     Text("余迹")
-                        .font(.system(size: 22, weight: .bold))
+                        .font(.system(size: 28, weight: .bold))
                     Text("安全清理")
-                        .font(.caption)
+                        .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.secondary)
                 }
             }
             .padding(.horizontal, 22)
-            .padding(.top, 54)
-            .padding(.bottom, 24)
+            .padding(.top, 50)
+            .padding(.bottom, 28)
 
             VStack(spacing: 5) {
                 ForEach(AppSection.allCases.filter { $0 != .settings }) { section in
