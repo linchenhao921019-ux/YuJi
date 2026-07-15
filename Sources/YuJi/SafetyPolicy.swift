@@ -3,14 +3,19 @@ import Foundation
 enum SafetyPolicy {
     private static let protectedNames: Set<String> = [
         "addressbook", "apple", "callhistorydb", "callhistorytransactions",
-        "clouddocs", "corefollowup", "differentialprivacy", "dock", "facetime",
-        "fileprovider", "icloud", "ilifemediabrowser", "knowledge", "mobilesync",
-        "notificationcenter", "siri", "shared", "syncservices", "systemconfiguration",
-        "tcc", "trial", "weather", "webpushd"
+        "apmanalyticssuitename", "apmexperimentsuitename", "byhost", "clouddocs",
+        "contextstoreagent", "corefollowup", "crashreporter", "diagnostics_agent",
+        "diagnosticreports", "differentialprivacy", "dock", "facetime", "familycircled",
+        "fileprovider", "icloud", "ilifemediabrowser", "knowledge", "locationaccessstored",
+        "loginwindow", "mbuseragent", "mobilemeaccounts", "mobilesync",
+        "notificationcenter", "pbs", "privacypreservingmeasurement", "shared",
+        "sharedfilelist", "sharedfilelistd", "siri", "syncservices",
+        "systemconfiguration", "tokenbucketratelimiter", "tcc", "trial", "weather",
+        "webpushd"
     ]
 
     private static let protectedPrefixes = [
-        "com.apple.", "group.com.apple.", "apple.", "system."
+        "com.apple.", "group.com.apple.", "org.cups.", "apple.", "system."
     ]
 
     private static let sensitiveNames: Set<String> = [
@@ -27,17 +32,17 @@ enum SafetyPolicy {
             home.appending(path: "Library/HTTPStorages"),
             home.appending(path: "Library/Logs"),
             home.appending(path: "Library/Saved Application State"),
-            home.appending(path: "Library/Preferences"),
-            home.appending(path: "Library/Cookies"),
             URL(fileURLWithPath: "/Library/Application Support"),
-            URL(fileURLWithPath: "/Library/Logs"),
-            URL(fileURLWithPath: "/Library/Preferences")
+            URL(fileURLWithPath: "/Library/Logs")
         ].map(\.standardizedFileURL)
     }()
 
     static func isProtectedName(_ name: String) -> Bool {
         let lower = name.lowercased()
-        return protectedNames.contains(lower) || protectedPrefixes.contains { lower.hasPrefix($0) }
+        let base = URL(fileURLWithPath: lower).deletingPathExtension().lastPathComponent
+        return protectedNames.contains(lower) ||
+            protectedNames.contains(base) ||
+            protectedPrefixes.contains { lower.hasPrefix($0) }
     }
 
     static func isProtectedPath(_ path: String) -> Bool {

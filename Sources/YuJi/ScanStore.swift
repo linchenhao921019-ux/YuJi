@@ -137,6 +137,8 @@ final class ScanStore: ObservableObject {
         pendingTrash = false
         var moved = 0
         var failures: [String] = []
+        var policyBlocks = 0
+        var operationFailures = 0
 
         for residue in targets {
             var itemMoved = false
@@ -147,10 +149,12 @@ final class ScanStore: ObservableObject {
                     ? SafetyPolicy.isApprovedUserCachePath(url.path)
                     : SafetyPolicy.isApprovedResiduePath(url.path)
                 guard approvedLocation else {
+                    policyBlocks += 1
                     failures.append("\(residue.name)：路径不在允许的安全清理范围，已阻止清理")
                     continue
                 }
                 guard !SafetyPolicy.isProtectedPath(url.path) else {
+                    policyBlocks += 1
                     failures.append("\(residue.name)：系统保护目录，已阻止清理")
                     continue
                 }
@@ -159,7 +163,8 @@ final class ScanStore: ObservableObject {
                     try FileManager.default.trashItem(at: url, resultingItemURL: &resultingURL)
                     itemMoved = true
                 } catch {
-                    failures.append("\(residue.name)：\(error.localizedDescription)")
+                    operationFailures += 1
+                    failures.append("\(residue.name)：macOS 未允许移动“\(url.lastPathComponent)”，文件保持原位")
                 }
             }
             if itemMoved { moved += 1 }
@@ -171,8 +176,10 @@ final class ScanStore: ObservableObject {
 
         if failures.isEmpty {
             message = AppMessage(title: "已移到废纸篓", detail: "已安全移动 \(moved) 组项目，需要时可从废纸篓恢复。缓存会由相关应用按需重新生成。")
-        } else if moved == 0 {
+        } else if moved == 0 && policyBlocks > 0 && operationFailures == 0 {
             message = AppMessage(title: "已阻止不安全清理", detail: failures.prefix(3).joined(separator: "\n"))
+        } else if moved == 0 {
+            message = AppMessage(title: "所选项目未能移动", detail: failures.prefix(3).joined(separator: "\n"))
         } else {
             message = AppMessage(title: "部分项目未能移动", detail: failures.prefix(3).joined(separator: "\n"))
         }

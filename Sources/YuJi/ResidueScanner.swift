@@ -109,7 +109,7 @@ enum ResidueScanner {
                 let rawName = child.lastPathComponent
                 let stats = measured[child.path] ?? quickStats(child)
                 let isEmpty = stats.size == 0 && isEffectivelyEmptyDirectory(child, fileManager: fm, deadline: deadline)
-                let minimumSize: Int64 = root.lastPathComponent == "Preferences" ? 4 * 1024 : 512 * 1024
+                let minimumSize: Int64 = 512 * 1024
                 guard isEmpty || stats.size >= minimumSize else { continue }
 
                 let modified = stats.modified ?? modificationDate(child)
@@ -197,11 +197,8 @@ enum ResidueScanner {
             (home.appending(path: "Library/HTTPStorages"), 8),
             (home.appending(path: "Library/Logs"), 7),
             (home.appending(path: "Library/Saved Application State"), 7),
-            (home.appending(path: "Library/Preferences"), 5),
-            (home.appending(path: "Library/Cookies"), 5),
             (URL(fileURLWithPath: "/Library/Application Support"), 14),
-            (URL(fileURLWithPath: "/Library/Logs"), 6),
-            (URL(fileURLWithPath: "/Library/Preferences"), 5)
+            (URL(fileURLWithPath: "/Library/Logs"), 6)
         ]
     }
 
@@ -446,11 +443,16 @@ enum ResidueScanner {
         return Array(groups.values)
     }
 
-    private static func mergeKey(_ raw: String) -> String {
-        let parts = raw.lowercased().split(whereSeparator: { $0 == "." || $0 == "-" || $0 == "_" })
+    static func mergeKey(_ raw: String) -> String {
+        var base = raw.lowercased()
+        for suffix in [".savedstate", ".plist", ".cookies", ".sqlite", ".db"] where base.hasSuffix(suffix) {
+            base.removeLast(suffix.count)
+            break
+        }
+        let parts = base.split(whereSeparator: { $0 == "." || $0 == "-" || $0 == "_" })
             .map(String.init)
             .filter { !["com", "org", "net", "io", "group", "app", "mac", "macos", "container"].contains($0) }
-        return normalize(parts.last ?? raw)
+        return normalize(parts.isEmpty ? base : parts.joined())
     }
 
     private static func displayName(_ raw: String) -> String {

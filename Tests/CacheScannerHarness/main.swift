@@ -84,9 +84,43 @@ require(
     !SafetyPolicy.isApprovedUserCachePath(fm.homeDirectoryForCurrentUser.appending(path: "Library/Caches/com.apple.Safari").path),
     "protected Apple cache path was allowed"
 )
+require(
+    !SafetyPolicy.isApprovedResiduePath(fm.homeDirectoryForCurrentUser.appending(path: "Library/Preferences/com.example.old.plist").path),
+    "high-risk user preference file was allowed"
+)
+require(
+    !SafetyPolicy.isApprovedResiduePath(fm.homeDirectoryForCurrentUser.appending(path: "Library/Cookies/com.example.cookies").path),
+    "high-risk cookie file was allowed"
+)
+require(
+    SafetyPolicy.isProtectedPath(fm.homeDirectoryForCurrentUser.appending(path: "Library/Logs/DiagnosticReports").path),
+    "DiagnosticReports was not protected"
+)
+require(
+    SafetyPolicy.isProtectedPath(fm.homeDirectoryForCurrentUser.appending(path: "Library/Preferences/ByHost").path),
+    "ByHost preferences were not protected"
+)
+require(
+    SafetyPolicy.isProtectedPath(fm.homeDirectoryForCurrentUser.appending(path: "Library/Preferences/ContextStoreAgent.plist").path),
+    "ContextStoreAgent preferences were not protected"
+)
+require(
+    SafetyPolicy.isProtectedPath(fm.homeDirectoryForCurrentUser.appending(path: "Library/Preferences/org.cups.printers.plist").path),
+    "CUPS preferences were not protected"
+)
+require(
+    ResidueScanner.mergeKey("com.tuxera.NTFS.plist") != ResidueScanner.mergeKey("org.cups.printers.plist"),
+    "unrelated plist files were merged"
+)
+require(
+    ResidueScanner.mergeKey("com.example.profileold") == ResidueScanner.mergeKey("org.example.profileold"),
+    "matching cross-root residue identifiers no longer merge"
+)
 
 let routineRoots = ResidueScanner.defaultScanRoots(home: fm.homeDirectoryForCurrentUser).map(\.0.path)
 require(!routineRoots.contains { $0.contains("/Library/Containers") }, "routine scan enters private app containers")
 require(!routineRoots.contains { $0.contains("/Library/Group Containers") }, "routine scan enters private app group containers")
+require(!routineRoots.contains { $0.hasSuffix("/Library/Preferences") }, "routine scan enters high-risk preferences")
+require(!routineRoots.contains { $0.hasSuffix("/Library/Cookies") }, "routine scan enters high-risk cookies")
 
-print("PASS: expanded discovery, batched sizing, sensitive-data protection, cleanup boundaries, and private-container exclusion")
+print("PASS: discovery, plist isolation, sensitive-data protection, cleanup boundaries, and private-data exclusion")
